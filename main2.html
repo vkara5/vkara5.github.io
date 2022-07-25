@@ -1,0 +1,405 @@
+<html>
+<!-- <h2 style="text-align:center; margin-left:20px;margin-right:20px;color: #272643;">Vaibhav Karanam, CS-416(Summer 2022), UIUC-MCS</h2>
+<h3 style="text-align:center; margin-left:20px;margin-right:20px;color: #272643;">This visualization showcases the Super Bowl ads run by 10 brands from 2000 to 2020. These ads are tagged with 4 different attributes: Danger, Funny, Patriotic, and Sexual. I have used this dataset to analyze what attributes brands constantly use for the last two decades and how these have changed over the years</h3>
+<h3 style="text-align:center; margin-left:20px;margin-right:20px;color: #272643;">Brands: Bud Light, Budweiser, Coca-Cola, Doritos, E-Trade, Hyundai, Kia, NFL, Pepsi, Toyota</h3>
+<h3 style="text-align:center; margin-left:20px;margin-right:20px;color: #272643;">The visualization contains slide show and comparison of ads by different brands of same industry</h3> -->
+<script src='https://d3js.org/d3.v4.js'></script>
+<!-- Load d3-annotation -->
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+<style> 
+/* path {stroke: black;} */
+
+/* current data points  */
+.present{
+    fill:#003c8f;
+    
+}
+/* get the hover functionality for not-current data points */
+.old:hover{
+    stroke: red;
+    z-index: 2;
+}
+/* get the hover functionality for current data points */
+.present:hover{
+    stroke: red;
+    fill:black;
+}
+/* Setting background color of webpage */
+body {
+  background-color: #fff8e1;
+}
+
+/* Setting up header */
+h1 {
+    margin-top: 30px;
+    text-align:center;
+    color: #272643;
+}
+.button2{
+    background-color: #a7c0cd;
+}
+.button1{
+    margin-left: 10px;
+}
+h4{
+    margin-left: 10px;
+    color: #272643;
+}
+
+.button-compare{
+    border-radius: 4px;
+    background-color: honeydew;
+    float: right;
+    margin-right: 10px;
+  border: 1px solid green;
+  padding: 10px 24px;
+
+}
+
+.button-compare:hover{
+    background-color: #a5d6a7;
+}
+.button-intro{
+    border-radius: 4px;
+    background-color: honeydew;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    position: absolute;
+left:    0;
+bottom:   0;
+  border: 1px solid green;
+  padding: 10px 24px;
+
+}
+
+.button-intro:hover{
+    background-color: #a5d6a7;
+}
+
+</style>
+
+<body>
+<h1>Super Bowl Ads 2000-2006</h1>
+<!-- Title for slide show -->
+<h4>Click to change slides</h4>
+<!-- buttons to navigate slide show -->
+<button class = "button1" onclick="location.href='index.html'" type="button">1</button>
+<button class = "button2" onclick="location.href='main2.html'">2</button>
+<button onclick="location.href='main3.html'">3</button>
+<button onclick="location.href='main4.html'">4</button>
+<button onclick="location.href='main5.html'">5</button>
+<button onclick="location.href='main6.html'">6</button>
+<button class="button-compare"  onclick="location.href='beer.html'" type="button">Brand Ad Attributes Comparison</button>
+<!-- <button class="button-intro"  onclick="location.href='intro.html'" type="button">Information Page</button> -->
+<div id="output">
+<svg>
+</svg>
+</div>
+<script>
+
+   // set the dimensions and margins of the graph
+    var margin = {top: 200, right: 30, bottom: 90, left: 650},
+    width = 1100 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+    var svg = 
+    d3.select("svg")
+    // .attr("width", width + margin.left + margin.right)
+    .attr("width", 1600)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+    // Parse the Data 2000-2006
+    d3.csv("https://raw.githubusercontent.com/vkara5/CS513-Final-Project/main/ads.csv", function(data) {
+
+
+// Annotation: https://d3-graph-gallery.com/graph/custom_annotation.html#subject
+const annotations = [
+  {
+    note: {
+      label: "Hover over the points to get exact count",
+    //   title: "Annotation title"
+    },
+    color: ["black"],
+    x: 1400,
+    y: 400,
+    dy: 0,
+    dx: 10
+  }
+  ,
+  {
+    note: {
+      label: "(2000-2006) gives us the lowest number of ads with 'Patriotic' attribute",
+    //   title: "Annotation title"
+    },
+    color: ["#003c8f"],
+    x: 820,
+    y: 600,
+    dy: -30,
+    dx: -200
+  }
+  ,
+  {
+    note: {
+      label: "(2000-2006) gives us the highest number of ads with 'Sexual' attribute",
+    //   title: "Annotation title"
+    },
+    color: ["#003c8f"],
+    x: 990,
+    y: 495,
+    dy: -30,
+    dx: 150
+  }
+]
+
+// Add annotation to the chart
+const makeAnnotations = d3.annotation()
+  .annotations(annotations);
+
+d3.select("svg")
+  .append("g")
+  .attr("class","annot")
+  .call(makeAnnotations)
+
+    // X axis
+var x = d3.scaleBand()
+  .range([ 0, width ])
+  .domain(["Funny","Patriotic","Danger","Sexual"])
+  .padding(1);
+svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x))
+  .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end")
+    .style("font-size","14");
+
+// Add Y axis
+var y = d3.scaleLinear()
+  .domain([0, 100])
+  .range([ height, 0]);
+svg.append("g")
+  .call(d3.axisLeft(y));
+
+
+  // Axis Labels : https://stackoverflow.com/questions/11189284/d3-axis-labeling
+  svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width-180)
+    .attr("y", height +80)
+    .text("Ad Attributes");
+
+    svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("#s of Ads");
+
+//Non-current Data points addition:
+    //ads4 2007 - 2013
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Funny"); })
+    .attr("cy", function() { return y(64); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2007-2013): "+64);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+    
+    //Patriotic,14
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Patriotic"); })
+    .attr("cy", function() { return y(14); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2007-2013): "+14);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+    
+    //Danger,31
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Danger"); })
+    .attr("cy", function() { return y(31); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2007-2013): "+31);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+    //Sexual,25
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Sexual"); })
+    .attr("cy", function() { return y(25); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2007-2013): "+25);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+    //ads5 2014 - 2020
+
+    //Funny, 41
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Funny"); })
+    .attr("cy", function() { return y(41); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2014-2020): "+41);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+    
+
+
+    //Patriotic,24
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Patriotic"); })
+    .attr("cy", function() { return y(24); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2014-2020): "+24);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+    
+    //Danger,21
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Danger"); })
+    .attr("cy", function() { return y(21); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2014-2020): "+21);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+    //Sexual,11
+    svg
+    .append("circle")
+    .attr("class","old")
+    .attr("cx", function() { return x("Sexual"); })
+    .attr("cy", function() { return y(11); })
+    .attr("r", "6")
+    .style("fill", "white")
+    .attr("stroke", "#a1a1a1")
+    .attr("stroke-width", "2")
+    .on("mouseover", function(){tooltip.text("(2014-2020): "+11);  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+
+//2000-2006
+// current data pointsLines
+
+    svg.selectAll("myline")
+  .data(data)
+  .enter()
+  .append("line")
+    .attr("x1", function(d) { return x(d.attr); })
+    .attr("x2", function(d) { return x(d.attr); })
+    .attr("y1", y(0) )
+    .attr("y2", y(0))
+    .attr("stroke", "grey")
+
+//     //  svg.selectAll("myline")
+//   .data(data)
+//   .enter()
+//   .append("line")
+//     .attr("x1", function(d) { return x(d.attr); })
+//     .attr("x2", function(d) { return x(d.attr); })
+//     .attr("y1", function(d) { return y(d.count); })
+//     .attr("y2", y(0))
+//     .attr("stroke", "grey")
+
+
+//Adding line effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
+svg.selectAll("line")
+  .transition()
+  .duration(2000)
+  .attr("y1", function(d) { return y(d.count);})
+
+
+
+//Circles
+var circlex = svg.selectAll("mycircle")
+  .data(data)
+  .enter()
+  .append("circle")
+  .attr("class","present")
+    .attr("cx", function(d) { return x(d.attr); })
+    .attr("cy", y(0))
+    .attr("r", "5")
+    .attr("stroke", "black")
+    .on("mouseover", function(d){tooltip.text("(2000-2006): "+d.count);d3.selectAll(".mycircle").attr("fill", "black");  return tooltip.style("visibility", "visible");})
+    .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+    .on("mouseout", function(){d3.selectAll(".mycircle").attr("fill", "black");return tooltip.style("visibility", "hidden");});
+    
+//       var circlex = svg.selectAll("mycircle")
+//   .data(data)
+//   .enter()
+//   .append("circle")
+//   .transition()
+//   .duration(2000)
+//   .attr("class","present")
+//     .attr("cx", function(d) { return x(d.attr); })
+//     .attr("cy", function(d) { return y(d.count); })
+//     .attr("r", "5")
+//     .attr("stroke", "black")
+//     .on("mouseover", function(d){tooltip.text("(2000-2006): "+d.count);d3.selectAll(".mycircle").attr("fill", "black");  return tooltip.style("visibility", "visible");})
+//       .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+//       .on("mouseout", function(){d3.selectAll(".mycircle").attr("fill", "black");return tooltip.style("visibility", "hidden");});
+    
+
+
+// //Adding circle effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
+svg.selectAll(".present")
+  .transition()
+  .duration(2000)
+  .attr("cy", function(d) { return y(d.count); })
+
+
+  //Tooltip set up
+    var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+
+})
+
+</script>
+</body>
+</html>
