@@ -8,11 +8,8 @@
 <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 <style> 
 /* path {stroke: black;} */
-
-/* current data points  */
 .present{
     fill:#003c8f;
-    
 }
 /* get the hover functionality for not-current data points */
 .old:hover{
@@ -28,23 +25,24 @@
 body {
   background-color: #fff8e1;
 }
-
 /* Setting up header */
 h1 {
     margin-top: 30px;
     text-align:center;
     color: #272643;
 }
-
+/* The  current page button */
 .button1{
-    background-color: #a7c0cd;
-    margin-left: 10px;
+    background-color: honeydew;
+    padding: 5px 24px;border: 1px solid grey;
+   
 }
+/* Navigation Text header */
 .field{
     margin-left: 10px;
     color: #272643;
 }
-
+/* Button to go to comparison page */
 .button-compare{
     border-radius: 4px;
     background-color: honeydew;
@@ -58,7 +56,7 @@ h1 {
 .button-compare:hover{
     background-color: #a5d6a7;
 }
-
+/* Not using it */
 .button-intro{
     border-radius: 4px;
     background-color: honeydew;
@@ -78,26 +76,32 @@ bottom:   0;
     background-color: #a5d6a7;
 }
 
-
-
+.button1:hover{
+  background-color: #a5d6a7;
+}
+/* Navigation button */
+.next-button{
+  background-color: white;
+  background-color: white;
+  padding: 5px 24px;
+  border: 1px solid grey;
+}
+.next-button:hover{
+  background-color:#a5d6a7;
+}
 </style>
 
 <body>
-<h1>Super Bowl Ads 2000-2006</h1>
-<!-- <h4 style="text-align:center;">This dashboard showcases the Super Bowl ads run by 10 brands from 2000 to 2020. These ads are tagged with 4 different characteristics/emotions: Danger, Funny, Patriotic, and Sexual. I have used this dataset to analyze what emotions brands constantly use for the last two decades and how these emotions have changed over the years.</h4> -->
+<h1>Super Bowl Ads</h1>
+<h4 style="text-align:center;">This slide show visualization showcases the Super Bowl ads run by 10 brands from 2000 to 2020. These ads are tagged with 4 different characteristics/emotions: Danger, Funny, Patriotic, and Sexual. I have used this dataset to analyze what emotions brands constantly use for the last two decades and how these emotions have changed over the years.<br><br>Note: An ad can be classified with multiple emotions</h4>
 <!-- Title for slide show -->
-<h4 class="field">Click to change slides</h4>
+<h4 class="field">Click '+'' to move to next slide or click '-' to go back to previous slide</h4>
 <!-- buttons to navigate slide show -->
+<button style="background-color: #e0e0e0; margin-left: 10px;padding: 5px 24px;border: 1px solid grey;">-</button>
 <button class = "button1" onclick="location.href='index.html'" type="button">1</button>
-<button onclick="location.href='main2.html'">2</button>
-<button onclick="location.href='main3.html'">3</button>
-<button onclick="location.href='main4.html'">4</button>
-<button onclick="location.href='main5.html'">5</button>
-<button onclick="location.href='main6.html'">6</button>
-
+<button class="next-button" onclick="location.href='main2.html'">+</button>
 <button class="button-compare"  onclick="location.href='beer.html'" type="button">Brand Ad Attributes Comparison</button>
 <!-- <button class="button-intro"  onclick="location.href='intro.html'" type="button">Information Page</button> -->
-
 <div id="output">
 <svg>
 </svg>
@@ -112,7 +116,6 @@ bottom:   0;
 // append the svg object to the body of the page
     var svg = 
     d3.select("svg")
-    // .attr("width", width + margin.left + margin.right)
     .attr("width", 1600)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -125,6 +128,17 @@ bottom:   0;
 
 // Annotation: https://d3-graph-gallery.com/graph/custom_annotation.html#subject
 const annotations = [
+{
+    note: {
+    //   label: "Hover over the points to get exact count",
+      title: "Brands"
+    },
+    color: ["black"],
+    x: 1400,
+    y: 200,
+    dy: -0.0001,
+    dx: 3
+  },
   
   {
     note: {
@@ -160,7 +174,70 @@ d3.select("svg")
   .attr("class","annot")
   .call(makeAnnotations)
 
-    // X axis
+// Text for brand names
+  d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "225px")
+    .text("Bud Light");
+    
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "255px")
+    .text("Budweiser");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "280px")
+    .text("Coca-Cola");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "305px")
+    .text("Doritos");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "305px")
+    .text("Doritos");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "330px")
+    .text("E-Trade");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "355px")
+    .text("Hyundai");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "380px")
+    .text("Kia");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "405px")
+    .text("NFL");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "430px")
+    .text("Pepsi");
+
+    d3.select("svg").append("text")
+    .attr("x", "1400px")
+    .attr("y", "455px")
+    .text("Toyota");
+
+//Year text on top of graph
+    d3.select("svg").append("text")
+    .attr("x", "800px")
+    .attr("y", "180px")
+    .style("font-size", "19px")
+    .text("Year: 2000-2006");
+
+  // X axis
 var x = d3.scaleBand()
   .range([ 0, width ])
   .domain(["Funny","Patriotic","Danger","Sexual"])
@@ -197,6 +274,7 @@ svg.append("g")
     .attr("transform", "rotate(-90)")
     .text("#s of Ads");
 
+    
 //Non-current Data points addition:
     //ads4 2007 - 2013
     svg
@@ -328,23 +406,11 @@ svg.append("g")
     .attr("y2", y(0))
     .attr("stroke", "grey")
 
-//     //  svg.selectAll("myline")
-//   .data(data)
-//   .enter()
-//   .append("line")
-//     .attr("x1", function(d) { return x(d.attr); })
-//     .attr("x2", function(d) { return x(d.attr); })
-//     .attr("y1", function(d) { return y(d.count); })
-//     .attr("y2", y(0))
-//     .attr("stroke", "grey")
-
-
 //Adding line effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
 svg.selectAll("line")
   .transition()
   .duration(2000)
   .attr("y1", function(d) { return y(d.count);})
-
 
 
 //Circles
@@ -361,24 +427,7 @@ var circlex = svg.selectAll("mycircle")
     .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
     .on("mouseout", function(){d3.selectAll(".mycircle").attr("fill", "black");return tooltip.style("visibility", "hidden");});
     
-//       var circlex = svg.selectAll("mycircle")
-//   .data(data)
-//   .enter()
-//   .append("circle")
-//   .transition()
-//   .duration(2000)
-//   .attr("class","present")
-//     .attr("cx", function(d) { return x(d.attr); })
-//     .attr("cy", function(d) { return y(d.count); })
-//     .attr("r", "5")
-//     .attr("stroke", "black")
-//     .on("mouseover", function(d){tooltip.text("(2000-2006): "+d.count);d3.selectAll(".mycircle").attr("fill", "black");  return tooltip.style("visibility", "visible");})
-//       .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
-//       .on("mouseout", function(){d3.selectAll(".mycircle").attr("fill", "black");return tooltip.style("visibility", "hidden");});
-    
-
-
-// //Adding circle effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
+// //Adding rising circle effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
 svg.selectAll(".present")
   .transition()
   .duration(2000)
@@ -393,7 +442,6 @@ svg.selectAll(".present")
     .style("visibility", "hidden")
 
 })
-
 </script>
 </body>
 </html>

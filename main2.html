@@ -38,14 +38,16 @@ h1 {
 .button2{
     background-color: #a7c0cd;
 }
+/* The  current page button */
 .button1{
-    margin-left: 10px;
+    background-color: honeydew;
+    padding: 5px 24px;border: 1px solid grey;
 }
 h4{
     margin-left: 10px;
     color: #272643;
 }
-
+/* Button to go to comparison page */
 .button-compare{
     border-radius: 4px;
     background-color: honeydew;
@@ -59,6 +61,7 @@ h4{
 .button-compare:hover{
     background-color: #a5d6a7;
 }
+/* Not using it */
 .button-intro{
     border-radius: 4px;
     background-color: honeydew;
@@ -78,19 +81,35 @@ bottom:   0;
     background-color: #a5d6a7;
 }
 
+.button1:hover{
+  background-color: #a5d6a7;
+}
+
+.next-button{
+  background-color: white;
+  background-color: white;
+  padding: 5px 24px;
+  border: 1px solid grey;
+}
+.next-button:hover{
+  background-color:#a5d6a7;
+}
+/* Navigation Text header */
+.field{
+    margin-left: 10px;
+    color: #272643;
+}
+
 </style>
 
 <body>
 <h1>Super Bowl Ads 2000-2006</h1>
 <!-- Title for slide show -->
-<h4>Click to change slides</h4>
+<h4 class="field">Click '+'' to move to next slide or click '-' to go back to previous slide</h4>
 <!-- buttons to navigate slide show -->
-<button class = "button1" onclick="location.href='index.html'" type="button">1</button>
-<button class = "button2" onclick="location.href='main2.html'">2</button>
-<button onclick="location.href='main3.html'">3</button>
-<button onclick="location.href='main4.html'">4</button>
-<button onclick="location.href='main5.html'">5</button>
-<button onclick="location.href='main6.html'">6</button>
+<button class="next-button" onclick="location.href='index.html'">-</button>
+<button class = "button1" onclick="location.href='main2.html'" type="button">2</button>
+<button class="next-button" onclick="location.href='main3.html'">+</button>
 <button class="button-compare"  onclick="location.href='beer.html'" type="button">Brand Ad Attributes Comparison</button>
 <!-- <button class="button-intro"  onclick="location.href='intro.html'" type="button">Information Page</button> -->
 <div id="output">
@@ -107,7 +126,6 @@ bottom:   0;
 // append the svg object to the body of the page
     var svg = 
     d3.select("svg")
-    // .attr("width", width + margin.left + margin.right)
     .attr("width", 1600)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -335,15 +353,6 @@ svg.append("g")
     .attr("y2", y(0))
     .attr("stroke", "grey")
 
-//     //  svg.selectAll("myline")
-//   .data(data)
-//   .enter()
-//   .append("line")
-//     .attr("x1", function(d) { return x(d.attr); })
-//     .attr("x2", function(d) { return x(d.attr); })
-//     .attr("y1", function(d) { return y(d.count); })
-//     .attr("y2", y(0))
-//     .attr("stroke", "grey")
 
 
 //Adding line effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
@@ -368,24 +377,8 @@ var circlex = svg.selectAll("mycircle")
     .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
     .on("mouseout", function(){d3.selectAll(".mycircle").attr("fill", "black");return tooltip.style("visibility", "hidden");});
     
-//       var circlex = svg.selectAll("mycircle")
-//   .data(data)
-//   .enter()
-//   .append("circle")
-//   .transition()
-//   .duration(2000)
-//   .attr("class","present")
-//     .attr("cx", function(d) { return x(d.attr); })
-//     .attr("cy", function(d) { return y(d.count); })
-//     .attr("r", "5")
-//     .attr("stroke", "black")
-//     .on("mouseover", function(d){tooltip.text("(2000-2006): "+d.count);d3.selectAll(".mycircle").attr("fill", "black");  return tooltip.style("visibility", "visible");})
-//       .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
-//       .on("mouseout", function(){d3.selectAll(".mycircle").attr("fill", "black");return tooltip.style("visibility", "hidden");});
-    
 
-
-// //Adding circle effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
+// //Adding rising circle effects: https://d3-graph-gallery.com/graph/lollipop_animationStart.html
 svg.selectAll(".present")
   .transition()
   .duration(2000)
@@ -400,7 +393,6 @@ svg.selectAll(".present")
     .style("visibility", "hidden")
 
 })
-
 </script>
 </body>
 </html>
